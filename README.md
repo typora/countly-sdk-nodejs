@@ -1,4 +1,4 @@
-#Countly NodeJS SDK
+#Countly NodeJS SDK [![npm version](https://badge.fury.io/js/countly-sdk-nodejs.svg)](https://badge.fury.io/js/countly-sdk-nodejs) 
 
 ##How to get Countly NodeJS SDK?
 
@@ -73,3 +73,4 @@ If you like Countly, why not use one of our badges and give a link back to us, s
 For community support page, see [http://support.count.ly](http://support.count.ly "Countly Support").
 
 
+[![NPM](https://nodei.co/npm/countly-sdk-nodejs.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/countly-sdk-nodejs/)
