@@ -1,7 +1,7 @@
 var Countly = require('../lib/countly.js');
 
 Countly.init({
-    app_key: "{YOUR-API-KEY}",
+    app_key: "{YOUR-APP-KEY}",
     url: "https://cloud.count.ly/",
     debug: true
 });
@@ -9,46 +9,53 @@ Countly.init({
 
 Countly.begin_session();
 
-Countly.add_event({
-    "key": "in_app_purchase",
-    "count": 3,
-    "sum": 2.97,
-    "dur": 1000,
-    "segmentation": {
-        "app_version": "1.0",
-        "country": "Turkey"
-    }
-});
-          
-Countly.user_details({
-    "name": "Arturs Sosins",
-    "username": "ar2rsawseen",
-    "email": "test@test.com",
-    "organization": "Countly",
-    "phone": "+37112345678",
-    //Web URL to picture
-    "picture": "https://pbs.twimg.com/profile_images/1442562237/012_n_400x400.jpg", 
-    "gender": "M",
-    "byear": 1987, //birth year
-    "custom":{
-      "key1":"value1",
-      "key2":"value2",
-    }
-});
-  
 Countly.track_errors();
-Countly.track_view("test");
-
-try{
-    runthis();
-}
-catch(ex){Countly.log_error(ex)}
 
 setTimeout(function(){
-    Countly.end_session();
-}, 7000);
+    Countly.add_event({
+        "key": "in_app_purchase",
+        "count": 3,
+        "sum": 2.97,
+        "dur": 1000,
+        "segmentation": {
+            "app_version": "1.0",
+            "country": "Turkey"
+        }
+    });
+}, 5000);
 
-Countly.start_event("timed");
+setTimeout(function(){    
+    Countly.user_details({
+        "name": "Arturs Sosins",
+        "username": "ar2rsawseen",
+        "email": "test@test.com",
+        "organization": "Countly",
+        "phone": "+37112345678",
+        //Web URL to picture
+        "picture": "https://pbs.twimg.com/profile_images/1442562237/012_n_400x400.jpg", 
+        "gender": "M",
+        "byear": 1987, //birth year
+        "custom":{
+        "key1":"value1",
+        "key2":"value2",
+        }
+    });
+}, 10000);
+  
+setTimeout(function(){
+    Countly.track_view("test1");
+}, 15000);
+
+setTimeout(function(){
+    try{
+        runthis();
+    }
+    catch(ex){Countly.log_error(ex)}
+}, 20000);
+
+setTimeout(function(){
+    Countly.start_event("timed");
+}, 25000);
 
 setTimeout(function(){
     Countly.end_event({
@@ -59,10 +66,20 @@ setTimeout(function(){
             "country": "Turkey"
         }
     });
-}, 3000);
+}, 50000);
+
+setTimeout(function(){
+    Countly.track_view("test1");
+}, 55000);
+
+
+setTimeout(function(){
+    Countly.end_session();
+}, 70000);
+
 
 setTimeout(function(){
     crashDaApp();
-}, 10000);
+}, 100000);
           
           
