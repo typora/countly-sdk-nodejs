@@ -11,7 +11,7 @@ if (cluster.isMaster) {
 var Countly = require('../lib/countly.js');
 
 Countly.init({
-    app_key: "{YOUR-API-KEY}",
+    app_key: "{YOUR-APP-KEY}",
     url: "https://cloud.count.ly/",
     debug: true
 });
