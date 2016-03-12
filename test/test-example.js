@@ -186,9 +186,9 @@ var tests = [
     function(data){assert(data == "false")},
     
     function(data){assert.equal(data, "Adding event: ");},
-    function(data){assert.deepEqual(JSON.parse(data), {"key":"[CLY]_view","dur":40,"segmentation":{"name":"test1","segment":"Windows_NT"},"count":1});},
+    function(data){assert.deepEqual(JSON.parse(data), {"key":"[CLY]_view","dur":40,"segmentation":{"name":"test1","segment":os.type()},"count":1});},
     function(data){assert.equal(data, "Adding event: ");},
-    function(data){assert.deepEqual(JSON.parse(data), {"key":"[CLY]_view","segmentation":{"name":"test1","visit":1,"segment":"Windows_NT"},"count":1});},
+    function(data){assert.deepEqual(JSON.parse(data), {"key":"[CLY]_view","segmentation":{"name":"test1","visit":1,"segment":os.type()},"count":1});},
     function(data){assert.equal(data, "Processing request");},
     function(data){testEvent(data);},
     function(data){assert.equal(data, "Sending HTTP request");},
@@ -207,7 +207,7 @@ var tests = [
     
     function(data){assert.equal(data, "Ending session");},
     function(data){assert.equal(data, "Adding event: ");},
-    function(data){assert.deepEqual(JSON.parse(data), {"key":"[CLY]_view","dur":15,"segmentation":{"name":"test1","segment":"Windows_NT"},"count":1});},
+    function(data){assert.deepEqual(JSON.parse(data), {"key":"[CLY]_view","dur":15,"segmentation":{"name":"test1","segment":os.type()},"count":1});},
     function(data){assert.equal(data, "Processing request");},
     function(data){testEndSession(data);},
     function(data){assert.equal(data, "Sending HTTP request");},
