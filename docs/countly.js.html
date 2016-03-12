@@ -53,7 +53,7 @@
 	var inited = false,
 		sessionStarted = false,
         platform,
-        filePath = "../",
+        filePath = "../data/",
 		apiPath = "/i",
 		beatInterval = 500,
 		requestQueue = [],
@@ -112,23 +112,36 @@
 		if(!inited){
             startTime = getTimestamp();
 			inited = true;
-			requestQueue = store("cly_queue") || [];
-            timedEvents = store("cly_timed") || {};
 			ob = ob || {};
+            timedEvents = {};
             beatInterval = ob.interval || Countly.interval || beatInterval;
             failTimeoutAmount = ob.fail_timeout || Countly.fail_timeout || failTimeoutAmount;
             metrics = ob.metrics || Countly.metrics || {};
 			Countly.debug = ob.debug || Countly.debug || false;
 			Countly.app_key = ob.app_key || Countly.app_key || null;
-			Countly.device_id = ob.device_id || Countly.device_id || getId();
 			Countly.url = stripTrailingSlash(ob.url || Countly.url || "https://cloud.count.ly");
 			Countly.app_version = ob.app_version || Countly.app_version || "0.0";
 			Countly.country_code = ob.country_code || Countly.country_code || null;
 			Countly.city = ob.city || Countly.city || null;
 			Countly.ip_address = ob.ip_address || Countly.ip_address || null;
             log("Countly initialized");
-			heartBeat();
-			store("cly_id", Countly.device_id);
+            if (cluster.isMaster) {
+                Countly.device_id = ob.device_id || Countly.device_id || getId();
+                storeSet("cly_id", Countly.device_id);
+                requestQueue = storeGet("cly_queue", []);
+                eventQueue = storeGet("cly_event", []);
+                heartBeat();
+                //listen to current workers
+                if(cluster.workers){
+                    for (var id in cluster.workers) {
+                        cluster.workers[id].on('message', handleWorkerMessage);
+                    }
+                }
+                //handle future workers
+                cluster.on('fork', function(worker) {
+                    worker.on('message', handleWorkerMessage);
+                });
+            }
 		}
 	};
     
@@ -172,7 +185,6 @@
             reportViewDuration();
 			sessionStarted = false;
 			toRequestQueue({end_session:1, session_duration:sec});
-            heartBeat();
 		}
 	};
 	
@@ -182,12 +194,17 @@
     * @param {boolean=} merge - move data from old ID to new ID on server
     **/
 	Countly.change_id = function(newId, merge){
-		var oldId = Countly.device_id;
-		Countly.device_id = newId;
-		store("cly_id", Countly.device_id);
-		log("Changing id");
-        if(merge)
-            toRequestQueue({old_device_id:oldId});
+        if(cluster.isMaster){
+            var oldId = Countly.device_id;
+            Countly.device_id = newId;
+            storeSet("cly_id", Countly.device_id);
+            log("Changing id");
+            if(merge)
+                toRequestQueue({old_device_id:oldId});
+        }
+        else{
+            process.send({ cly: {change_id: newId, merge:merge} });
+        }
 	};
     
     /**
@@ -209,18 +226,23 @@
 			log("Event must have key property");
 			return;
 		}
-		
-		if(!event.count)
-			event.count = 1;
-		
-		var props = ["key", "count", "sum", "dur", "segmentation"];
-        var e = getProperties(event, props);
-        e.timestamp = getTimestamp();
-        var date = new Date();
-        e.hour = date.getHours();
-        e.dow = date.getDay();
-		eventQueue.push(e);
-		log("Adding event: ", event);
+		if(cluster.isMaster){
+            if(!event.count)
+                event.count = 1;
+            
+            var props = ["key", "count", "sum", "dur", "segmentation"];
+            var e = getProperties(event, props);
+            e.timestamp = getTimestamp();
+            var date = new Date();
+            e.hour = date.getHours();
+            e.dow = date.getDay();
+            log("Adding event: ", event);
+            eventQueue.push(e);
+            storeSet("cly_event", eventQueue);
+        }
+        else{
+            process.send({ cly: {event: event} });
+        }
 	};
     
     /**
@@ -233,7 +255,6 @@
             return;
         }
         timedEvents[key] = getTimestamp();
-        store("cly_timed", timedEvents);
     };
     
     /**
@@ -241,21 +262,20 @@
     * @param {string|Event} event - event key if string or Countly {@link Event} object
     **/
     Countly.end_event = function(event){
-        if(typeof event == "string"){
-            event = {key:event};
-        }
-        if(!event.key){
-			log("Event must have key property");
-			return;
-		}
-        if(!timedEvents[event.key]){
-            log("Timed event with key " + key + " was not started");
-            return;
-        }
-        event.dur = getTimestamp() - timedEvents[event.key];
-        Countly.add_event(event);
-        delete timedEvents[event.key];
-        store("cly_timed", timedEvents);
+       if(typeof event == "string"){
+           event = {key:event};
+       }
+       if(!event.key){
+           log("Event must have key property");
+           return;
+       }
+       if(!timedEvents[event.key]){
+           log("Timed event with key " + key + " was not started");
+           return;
+       }
+       event.dur = getTimestamp() - timedEvents[event.key];
+       Countly.add_event(event);
+       delete timedEvents[event.key];
     };
 	
     /**
@@ -421,7 +441,9 @@
         crashSegments = segments;
         process.on('uncaughtException', function (err) {
             recordError(err, false);
-            forceStore();
+            if(cluster.isMaster){
+                forceStore();
+            }
             console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
             console.error(err.stack);
             process.exit(1);
@@ -464,6 +486,54 @@
         lastViewStoredDuration = 0;
     };
     
+    /**
+    * Track which parts of application user visits
+    * @param {string=} name - optional name of the view
+    **/
+    Countly.track_view = function(name){
+        reportViewDuration();
+        if(name){
+            lastView = name;
+            lastViewTime = getTimestamp();
+            if(!platform)
+                getMetrics();
+            var segments = {
+                "name": name,
+                "visit":1,
+                "segment":platform
+            };
+            
+            //track pageview
+            Countly.add_event({
+                "key": "[CLY]_view",
+                "segmentation": segments
+            });
+        }
+    };
+    
+    /**
+    * Track which parts of application user visits. Alias of {@link track_view} method for compatability with Web SDK
+    * @param {string=} name - optional name of the view
+    **/
+    Countly.track_pageview = function(name){
+        Countly.track_view(name);
+    };
+    
+    /**
+    * Make raw request with provided parameters
+    * @example Countly.request({app_key:"somekey", devide_id:"someid", events:"[{'key':'val','count':1}]", begin_session:1});
+    * @param {Object} request - object with key/values which will be used as request parameters
+    **/
+    Countly.request = function(request){
+        if(cluster.isMaster){
+            requestQueue.push(request);
+            storeSet("cly_queue", requestQueue);
+        }
+        else{
+            process.send({ cly: {request: request} });
+        }
+    };
+    
 	/**
 	*  PRIVATE METHODS
 	**/
@@ -489,34 +559,34 @@
 	
 	//insert request to queue
 	function toRequestQueue(request){
-        //ignore bots
-        if(Countly.ignore_bots &amp;&amp; isBot)
-            return;
-        
-		if(!Countly.app_key || !Countly.device_id){
-			log("app_key or device_id is missing");
-			return;
-		}
+        if(cluster.isMaster){
+            if(!Countly.app_key || !Countly.device_id){
+                log("app_key or device_id is missing");
+                return;
+            }
+            request.app_key = Countly.app_key;
+            request.device_id = Countly.device_id;
+            
+            if(Countly.country_code)
+                request.country_code = Countly.country_code;
+            
+            if(Countly.city)
+                request.city = Countly.city;
+            
+            if(Countly.ip_address !== null)
+                request.ip_address = Countly.ip_address;
+                
+            request.timestamp = getTimestamp();
+            var date = new Date();
+            request.hour = date.getHours();
+            request.dow = date.getDay();
 		
-		request.app_key = Countly.app_key;
-		request.device_id = Countly.device_id;
-		
-		if(Countly.country_code)
-			request.country_code = Countly.country_code;
-		
-		if(Countly.city)
-			request.city = Countly.city;
-		
-		if(Countly.ip_address !== null)
-			request.ip_address = Countly.ip_address;
-			
-		request.timestamp = getTimestamp();
-        var date = new Date();
-        request.hour = date.getHours();
-        request.dow = date.getDay();
-		
-		requestQueue.push(request);
-		store("cly_queue", requestQueue, true);
+            requestQueue.push(request);
+            storeSet("cly_queue", requestQueue);
+        }
+        else{
+            process.send({ cly: {cly_queue: request} });
+        }
 	}
 	
 	//heart beat
@@ -541,6 +611,7 @@
 				var events = eventQueue.splice(0, 10);
 				toRequestQueue({events: JSON.stringify(events)});
 			}
+            storeSet("cly_event", eventQueue);
 		}
 		
 		//process request queue with event queue
@@ -554,7 +625,7 @@
                     requestQueue.unshift(params);
                     failTimeout = getTimestamp() + failTimeoutAmount;
                 }
-                store("cly_queue", requestQueue, true);
+                storeSet("cly_queue", requestQueue);
                 readyToProcess = true;
             });
 		}
@@ -564,9 +635,7 @@
 	
 	//get ID
 	function getId(){
-		var id = store("cly_id") || generateUUID();
-		store("cly_id", id);
-		return id;
+		return storeGet("cly_id", null) || generateUUID();
 	}
 	
 	//generate UUID
@@ -723,34 +792,81 @@
 		return ob;
 	}
     
-    var __data = {};
-    var dir = path.resolve(__dirname, filePath+'__data.json');
+    function handleWorkerMessage(msg){
+        if(msg.cly){
+            if(msg.cly.cly_queue){
+                toRequestQueue(msg.cly.cly_queue);
+            }
+            else if(msg.cly.change_id){
+                Countly.change_id(msg.cly.change_id, msg.cly.merge);
+            }
+            else if(msg.cly.event){
+                Countly.add_event(msg.cly.event);
+            }
+            else if(msg.cly.request){
+                Countly.request(msg.cly.request);
+            }
+        }
+    }
     
-    try{
-        __data = require(dir);
-    } catch (ex) {
-        console.log(ex);
-        __data = {};
+    var __data = {};
+    
+    var readFile = function(key){
+        var dir = path.resolve(__dirname, filePath+'__'+key+'.json');
+        
+        //try reading data file
+        try{
+            var data = fs.readFileSync(dir);
+        } catch (ex) {
+            //ther was no file, probably new init
+            data = null;
+        }
+    
+        try{
+            //trying to parse json string
+            data = JSON.parse(data);
+        } catch (ex) {
+            //problem parsing, corrupted file?
+            console.log(ex.stack);
+            //backup corrupted file data
+            fs.writeFile(path.resolve(__dirname, filePath+"__"+key+"."+getTimestamp()+Math.random()+".json"), data, function(){});
+            //start with new clean object
+            data = null;
+        }
+        return data;
     }
     
     var forceStore = function(){
-        fs.writeFileSync(dir, JSON.stringify(__data));
+        for(var i in __data){
+            var dir = path.resolve(__dirname, filePath+'__'+i+'.json');
+            var ob = {};
+            ob[i] = __data[i];
+            fs.writeFileSync(dir, JSON.stringify(ob));
+        }
     };
 	
-	var store = function store(key, value) {
-		// If value is detected, set new or modify store
-		if (typeof value !== "undefined" &amp;&amp; value !== null) {
-			__data[key] = value;
-            
-            fs.writeFile(dir, JSON.stringify(__data), function (err) {
-                if(err) {
-                    return console.log(err);
-                }
-            });
-		}
-        else{
-            return __data[key];
+	var storeSet = function(key, value) {
+		__data[key] = value;
+        var dir = path.resolve(__dirname, filePath+'__'+key+'.json');
+        var ob = {};
+        ob[key] = value;
+        fs.writeFile(dir, JSON.stringify(ob), function (err) {
+            if(err) {
+                return console.log(err);
+            }
+        });
+	};
+    
+    
+    var storeGet = function(key, def) {
+        if(typeof __data[key] == "undefined"){
+            var ob = readFile(key);
+            if(!ob)
+                __data[key] = def;
+            else
+                __data[key] = ob[key];
         }
+        return __data[key];
 	};
 })(Countly);
 
@@ -770,7 +886,7 @@ module.exports = Countly;</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Fri Mar 11 2016 18:42:03 GMT+0200 (FLE Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Mar 12 2016 10:20:09 GMT+0200 (FLE Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
