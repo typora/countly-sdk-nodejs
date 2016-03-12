@@ -2,5 +2,7 @@ language: javascript
 sudo: false
 before_script:
   - npm install -g jshint
+  - npm install -g mocha
 script: 
   - jshint lib/countly.js
+  - mocha test/test-example.js
