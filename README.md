@@ -1,4 +1,4 @@
-#Countly NodeJS SDK [![npm version](https://badge.fury.io/js/countly-sdk-nodejs.svg)](https://badge.fury.io/js/countly-sdk-nodejs) 
+#Countly NodeJS SDK [![Build Status](https://travis-ci.org/Countly/countly-sdk-nodejs.svg?branch=master)](https://travis-ci.org/Countly/countly-sdk-nodejs) [![npm version](https://badge.fury.io/js/countly-sdk-nodejs.svg)](https://badge.fury.io/js/countly-sdk-nodejs) 
 
 ##How to get Countly NodeJS SDK?
 
