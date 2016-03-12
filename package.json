@@ -27,6 +27,7 @@
   "homepage": "https://count.ly/",
   "dependencies": {},
   "devDependencies": {
-    "jshint": "*"
+    "jshint": "*",
+    "mocha": "*"
   }
 }
