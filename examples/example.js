@@ -37,6 +37,7 @@ Countly.user_details({
 });
   
 Countly.track_errors();
+Countly.track_view("test");
 
 try{
     runthis();
