@@ -6,7 +6,7 @@ Currently in testing phase
 
     npm install countly-sdk-nodejs
 
-##How to use Countly Web SDK?
+##How to use Countly NodeJS SDK?
 ```
 var Countly = require('countly-sdk-nodejs');
 
