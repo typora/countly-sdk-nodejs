@@ -1,0 +1,6 @@
+language: javascript
+sudo: false
+before_script:
+  - npm install -g jshint
+script: 
+  - jshint lib/countly.js

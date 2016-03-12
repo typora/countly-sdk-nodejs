@@ -26,5 +26,7 @@
   },
   "homepage": "https://count.ly/",
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "jshint": "*"
+  }
 }
