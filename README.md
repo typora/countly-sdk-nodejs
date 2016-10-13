@@ -73,7 +73,7 @@ If you like Countly, why not use one of our badges and give a link back to us, s
 
 ### Support
 
-For community support page, see [http://support.count.ly](http://support.count.ly "Countly Support").
+For community support page, see [http://community.count.ly](http://community.count.ly "Countly Support").
 
 
 [![NPM](https://nodei.co/npm/countly-sdk-nodejs.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/countly-sdk-nodejs/)
