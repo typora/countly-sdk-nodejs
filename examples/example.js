@@ -2,7 +2,7 @@ var Countly = require('../lib/countly.js');
 
 Countly.init({
     app_key: "{YOUR-APP-KEY}",
-    url: "https://cloud.count.ly/",
+    url: "https://yourdomain", //your server goes here
     debug: true
 });
 
