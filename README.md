@@ -21,6 +21,9 @@ Need help? See [Countly SDK for NodeJS](http://resources.count.ly/v1.0/docs/coun
 Currently in testing phase
 
     npm install countly-sdk-nodejs
+or
+
+    yarn add countly-sdk-nodejs
 
 ##How to use Countly NodeJS SDK?
 ```
