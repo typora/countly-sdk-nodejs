@@ -1,7 +1,8 @@
-#Countly NodeJS SDK [![Build Status](https://travis-ci.org/Countly/countly-sdk-nodejs.svg?branch=master)](https://travis-ci.org/Countly/countly-sdk-nodejs) [![npm version](https://badge.fury.io/js/countly-sdk-nodejs.svg)](https://badge.fury.io/js/countly-sdk-nodejs) [![Inline docs](http://inch-ci.org/github/Countly/countly-sdk-nodejs.svg?branch=master)](http://inch-ci.org/github/Countly/countly-sdk-nodejs)
+# Countly NodeJS SDK 
+[![Build Status](https://travis-ci.org/Countly/countly-sdk-nodejs.svg?branch=master)](https://travis-ci.org/Countly/countly-sdk-nodejs) [![npm version](https://badge.fury.io/js/countly-sdk-nodejs.svg)](https://badge.fury.io/js/countly-sdk-nodejs) [![Inline docs](http://inch-ci.org/github/Countly/countly-sdk-nodejs.svg?branch=master)](http://inch-ci.org/github/Countly/countly-sdk-nodejs)
 
 
-##What's Countly?
+## What's Countly?
 [Countly](http://count.ly) is an innovative, real-time, open source mobile analytics application. 
 It collects data from mobile devices, and visualizes this information to analyze mobile application 
 usage and end-user behavior. There are two parts of Countly: the server that collects and analyzes data, 
@@ -10,13 +11,13 @@ and mobile SDK that sends this data. Both parts are open source with different l
 * **Slack user?** [Join our Slack community](http://slack.count.ly:3000/)
 * **Questions?** [Ask in our Community forum](http://community.count.ly)
 
-##About
+## About
 
 This repository includes the Countly NodeJS SDK.
 
-Need help? See [Countly SDK for NodeJS](http://resources.count.ly/v1.0/docs/countly-sdk-for-nodejs) documentation at [Countly Resources](http://resources.count.ly).
+Need help? See [Countly SDK for NodeJS](http://resources.count.ly/v1.0/docs/countly-sdk-for-nodejs) SDK integration at [Countly Resources](http://resources.count.ly)  or [Countly NodeJS SDK Documentation](http://countly.github.io/countly-sdk-nodejs/)
 
-##How to get Countly NodeJS SDK?
+## How to get Countly NodeJS SDK?
 
 Currently in testing phase
 
@@ -25,7 +26,7 @@ or
 
     yarn add countly-sdk-nodejs
 
-##How to use Countly NodeJS SDK?
+## How to use Countly NodeJS SDK?
 ```
 var Countly = require('countly-sdk-nodejs');
 
@@ -66,7 +67,7 @@ There are also other Countly SDK repositories below:
 - [Countly Appcelerator Titanium SDK](https://github.com/euforic/Titanium-Count.ly) (Community supported)
 - [Countly Unity3D SDK](https://github.com/Countly/countly-sdk-unity) (Community supported)
 
-###How can I help you with your efforts?
+### How can I help you with your efforts?
 
 Glad you asked. We need ideas, feedbacks and constructive comments. All your suggestions will be taken care with upmost importance. We are on [Twitter](http://twitter.com/gocountly) and [Facebook](http://www.facebook.com/Countly) if you would like to keep up with our fast progress!
 
