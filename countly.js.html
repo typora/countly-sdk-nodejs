@@ -1,23 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Source: countly.js</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>countly.js - Countly NodeJS SDK Documentation</title>
+    
+    <meta name="description" content="JSDoc generated Countly NodeJS SDK documentation" />
+    
+        <meta name="keywords" content="countly, node, nodejs, sdk, jsdoc, doc, documentation" />
+        <meta name="keyword" content="countly, node, nodejs, sdk, jsdoc, doc, documentation" />
+    
+    
+    
+    <meta property="og:title" content="Countly NodeJS SDK Documentation"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    <meta property="og:site_name" content="Countly NodeJS SDK Documentation"/>
+    <meta property="og:url" content="http://countly.github.io/countly-sdk-nodejs/"/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Source: countly.js</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Countly.html">Countly</a><ul class='methods'><li data-type='method'><a href="Countly.html#.init">init</a></li><li data-type='method'><a href="Countly.html#.begin_session">begin_session</a></li><li data-type='method'><a href="Countly.html#.session_duration">session_duration</a></li><li data-type='method'><a href="Countly.html#.end_session">end_session</a></li><li data-type='method'><a href="Countly.html#.change_id">change_id</a></li><li data-type='method'><a href="Countly.html#.add_event">add_event</a></li><li data-type='method'><a href="Countly.html#.start_event">start_event</a></li><li data-type='method'><a href="Countly.html#.end_event">end_event</a></li><li data-type='method'><a href="Countly.html#.user_details">user_details</a></li><li data-type='method'><a href="Countly.html#.report_conversion">report_conversion</a></li><li data-type='method'><a href="Countly.html#.track_errors">track_errors</a></li><li data-type='method'><a href="Countly.html#.log_error">log_error</a></li><li data-type='method'><a href="Countly.html#.add_log">add_log</a></li><li data-type='method'><a href="Countly.html#.stop_time">stop_time</a></li><li data-type='method'><a href="Countly.html#.start_time">start_time</a></li><li data-type='method'><a href="Countly.html#.track_view">track_view</a></li><li data-type='method'><a href="Countly.html#.track_pageview">track_pageview</a></li><li data-type='method'><a href="Countly.html#.request">request</a></li></ul></li><li><a href="Countly.userData.html">userData</a><ul class='methods'><li data-type='method'><a href="Countly.userData.html#.set">set</a></li><li data-type='method'><a href="Countly.userData.html#.set_once">set_once</a></li><li data-type='method'><a href="Countly.userData.html#.increment">increment</a></li><li data-type='method'><a href="Countly.userData.html#.increment_by">increment_by</a></li><li data-type='method'><a href="Countly.userData.html#.multiply">multiply</a></li><li data-type='method'><a href="Countly.userData.html#.max">max</a></li><li data-type='method'><a href="Countly.userData.html#.min">min</a></li><li data-type='method'><a href="Countly.userData.html#.push">push</a></li><li data-type='method'><a href="Countly.userData.html#.push_unique">push_unique</a></li><li data-type='method'><a href="Countly.userData.html#.pull">pull</a></li><li data-type='method'><a href="Countly.userData.html#.save">save</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">countly.js</h1>
+    
 
     
 
@@ -32,10 +60,20 @@
 ************/
 
 /**
- * Countly object to manage the internal queue and send requests to Countly server
+ * Countly object to manage the internal queue and send requests to Countly server. More information on {@link http://resources.count.ly/docs/countly-sdk-for-nodejs}
  * @name Countly
  * @global
  * @namespace Countly
+ * @example &lt;caption>SDK integration&lt;/caption>
+ * var Countly = require('countly-sdk-nodejs');
+ *
+ * Countly.init({
+ *   app_key: "{YOUR-API-KEY}",
+ *   url: "https://API_HOST/",
+ *   debug: true
+ * });
+ *
+ * Countly.begin_session();
  */
  
  var fs = require('fs'),
@@ -82,42 +120,31 @@
         startTime;
 
 /**
-* Countly metrics object
-* @typedef {Object} Metrics
-* @property {string} _os - name of platform/operating system
-* @property {string} _os_version - version of platform/operating system
-* @property {string} _device - device name
-* @property {string} _resolution - screen resolution of the device
-* @property {string} _carrier - carrier or operator used for connection
-* @property {string} _density - screen density of the device
-* @property {string} _locale - locale or language of the device in ISO format
-* @property {string} _store - source from where the user/device/installation came from
-*/
-
-
-/**
-* Countly initialization object
-* @typedef {Object} Init
-* @property {string} app_key - app key for your app created in Countly
-* @property {string} device_id - to identify a visitor, will be auto generated if not provided
-* @property {string} url - your Countly server url, you can use your own server URL or IP here
-* @property {string} [app_version=0.0] - the version of your app or website
-* @property {string=} country_code - country code for your visitor
-* @property {string=} city - name of the city of your visitor
-* @property {string=} ip_address - ip address of your visitor
-* @property {boolean} [debug=false] - output debug info into console
-* @property {number} [interval=500] - set an interval how often to check if there is any data to report and report it in miliseconds
-* @property {number} [queue_size=1000] - maximum amount of queued requests to store
-* @property {number} [fail_timeout=60] - set time in seconds to wait after failed connection to server in seconds
-* @property {number} [session_update=60] - how often in seconds should session be extended
-* @property {number} [max_events=10] - maximum amount of events to send in one batch
-* @property {boolean} [force_post=false] - force using post method for all requests
-* @property {Metrics} metrics - provide {@link Metrics} for this user/device, or else will try to collect what's possible
-*/
-
-/**
  * Initialize Countly object
- * @param {Init} conf - Countly initialization {@link Init} object with configuration options
+ * @param {Object} conf - Countly initialization {@link Init} object with configuration options
+ * @param {string} conf.app_key - app key for your app created in Countly
+ * @param {string} conf.device_id - to identify a visitor, will be auto generated if not provided
+ * @param {string} conf.url - your Countly server url, you can use your own server URL or IP here
+ * @param {string} [conf.app_version=0.0] - the version of your app or website
+ * @param {string=} conf.country_code - country code for your visitor
+ * @param {string=} conf.city - name of the city of your visitor
+ * @param {string=} conf.ip_address - ip address of your visitor
+ * @param {boolean} [conf.debug=false] - output debug info into console
+ * @param {number} [conf.interval=500] - set an interval how often to check if there is any data to report and report it in miliseconds
+ * @param {number} [conf.queue_size=1000] - maximum amount of queued requests to store
+ * @param {number} [conf.fail_timeout=60] - set time in seconds to wait after failed connection to server in seconds
+ * @param {number} [conf.session_update=60] - how often in seconds should session be extended
+ * @param {number} [conf.max_events=10] - maximum amount of events to send in one batch
+ * @param {boolean} [conf.force_post=false] - force using post method for all requests
+ * @param {Object} conf.metrics - provide {@link Metrics} for this user/device, or else will try to collect what's possible
+ * @param {string} conf.metrics._os - name of platform/operating system
+ * @param {string} conf.metrics._os_version - version of platform/operating system
+ * @param {string} conf.metrics._device - device name
+ * @param {string} conf.metrics._resolution - screen resolution of the device
+ * @param {string} conf.metrics._carrier - carrier or operator used for connection
+ * @param {string} conf.metrics._density - screen density of the device
+ * @param {string} conf.metrics._locale - locale or language of the device in ISO format
+ * @param {string} conf.metrics._store - source from where the user/device/installation came from
  */
 	Countly.init = function(ob){
 		if(!inited){
@@ -238,20 +265,15 @@
             process.send({ cly: {change_id: newId, merge:merge} });
         }
 	};
-    
-    /**
-    * Countly custom event object
-    * @typedef {Object} Event
-    * @property {string} key - name or id of the event
-    * @property {number} [count=1] - how many times did event occur
-    * @property {number=} sum - sum to report with event (if any)
-    * @property {number=} dur - duration to report with event (if any)
-    * @property {Object=} segmentation - object with segments key /values
-    */
 	
     /**
     * Report custom event
     * @param {Event} event - Countly {@link Event} object
+    * @param {string} event.key - name or id of the event
+    * @param {number} [event.count=1] - how many times did event occur
+    * @param {number=} event.sum - sum to report with event (if any)
+    * @param {number=} event.dur - duration to report with event (if any)
+    * @param {Object=} event.segmentation - object with segments key /values
     **/
 	Countly.add_event = function(event){
 		if(!event.key){
@@ -291,7 +313,7 @@
     
     /**
     * End timed event
-    * @param {string|Event} event - event key if string or Countly {@link Event} object
+    * @param {string|Object} event - event key if string or Countly event same as passed to {@link Countly.add_event}
     **/
     Countly.end_event = function(event){
        if(typeof event == "string"){
@@ -311,22 +333,17 @@
     };
 	
     /**
-    * Countly user information object
-    * @typedef {Object} UserDetails
-    * @property {string=} name - user's full name
-    * @property {string=} username - user's username or nickname
-    * @property {string=} email - user's email address
-    * @property {string=} organization - user's organization or company
-    * @property {string=} phone - user's phone number
-    * @property {string=} picture - url to user's picture
-    * @property {string=} gender - M value for male and F value for femail
-    * @property {number=} byear - user's birth year used to calculate current age
-    * @property {Object=} custom - object with custom key value properties you want to save with user
-    */
-	
-    /**
     * Report custom event
-    * @param {UserDetails} user - Countly {@link UserDetails} object
+    * @param {Object} user - Countly {@link UserDetails} object
+    * @param {string=} user.name - user's full name
+    * @param {string=} user.username - user's username or nickname
+    * @param {string=} user.email - user's email address
+    * @param {string=} user.organization - user's organization or company
+    * @param {string=} user.phone - user's phone number
+    * @param {string=} user.picture - url to user's picture
+    * @param {string=} user.gender - M value for male and F value for femail
+    * @param {number=} user.byear - user's birth year used to calculate current age
+    * @param {Object=} user.custom - object with custom key value properties you want to save with user
     **/
 	Countly.user_details = function(user){
 		log("Adding userdetails: ", user);
@@ -374,7 +391,18 @@
     };
     
     /**
+    * Control user related custom properties. Don't forget to call save after finishing manipulation of custom data
     * @namespace Countly.userData
+    * @name Countly.userData
+    * @example
+    * //set custom key value property
+    * Countly.userData.set("twitter", "ar2rsawseen");
+    * //create or increase specific number property
+    * Countly.userData.increment("login_count");
+    * //add new value to array property if it is not already there
+    * Countly.userData.push_unique("selected_category", "IT");
+    * //send all custom property modified data to server
+    * Countly.userData.save();
     */
     Countly.userData = {
         /**
@@ -967,19 +995,38 @@ module.exports = Countly;
 
 
 
+    
+    
+    <div id="disqus_thread"></div>
+    <script>
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '//countly-documentation.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Countly.html">Countly</a></li><li><a href="Countly.userData.html">userData</a></li></ul><h3><a href="global.html">Global</a></h3>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Dec 28 2016 17:25:52 GMT+0200 (FLE Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/jquery-3.1.1.min.js"></script>
+
+<script src="scripts/search.js"></script>
+
+
+
+
+<script src="https://stats.count.ly/sdk/countly-docs.js"></script>
+    
 </body>
 </html>
