@@ -79,8 +79,8 @@ function testEvent(data){
         assert.ok(data.events[i].key);
         assert.ok(data.events[i].count);
         assert.ok(data.events[i].timestamp);
-        assert.ok(data.events[i].hour);
-        assert.ok(data.events[i].dow);
+        assert.ok(typeof data.events[i].hour !== "undefined");
+        assert.ok(typeof data.events[i].dow !== "undefined");
     }
     assert.equal(data.app_key, "{YOUR-APP-KEY}");
     assert.ok(data.device_id);
