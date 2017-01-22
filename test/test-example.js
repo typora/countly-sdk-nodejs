@@ -45,8 +45,8 @@ function testBeginSession(data){
     assert.equal(data.app_key, "{YOUR-APP-KEY}");
     assert.ok(data.device_id);
     assert.ok(data.timestamp);
-    assert.ok(data.hour);
-    assert.ok(data.dow);
+    assert.ok(typeof data.hour !== "undefined");
+    assert.ok(typeof data.dow !== "undefined");
     testMetrics(data.metrics);
 }
 
@@ -56,8 +56,8 @@ function testSessionDuration(data){
     assert.equal(data.app_key, "{YOUR-APP-KEY}");
     assert.ok(data.device_id);
     assert.ok(data.timestamp);
-    assert.ok(data.hour);
-    assert.ok(data.dow);
+    assert.ok(typeof data.hour !== "undefined");
+    assert.ok(typeof data.dow !== "undefined");
 }
 
 function testEndSession(data){
@@ -67,8 +67,8 @@ function testEndSession(data){
     assert.equal(data.app_key, "{YOUR-APP-KEY}");
     assert.ok(data.device_id);
     assert.ok(data.timestamp);
-    assert.ok(data.hour);
-    assert.ok(data.dow);
+    assert.ok(typeof data.hour !== "undefined");
+    assert.ok(typeof data.dow !== "undefined");
 }
 
 function testEvent(data){
@@ -85,8 +85,8 @@ function testEvent(data){
     assert.equal(data.app_key, "{YOUR-APP-KEY}");
     assert.ok(data.device_id);
     assert.ok(data.timestamp);
-    assert.ok(data.hour);
-    assert.ok(data.dow);
+    assert.ok(typeof data.hour !== "undefined");
+    assert.ok(typeof data.dow !== "undefined");
 }
 
 function testUserDetails(data){
@@ -105,8 +105,8 @@ function testUserDetails(data){
     assert.equal(data.app_key, "{YOUR-APP-KEY}");
     assert.ok(data.device_id);
     assert.ok(data.timestamp);
-    assert.ok(data.hour);
-    assert.ok(data.dow);
+    assert.ok(typeof data.hour !== "undefined");
+    assert.ok(typeof data.dow !== "undefined");
 }
 
 function testCrash(data){
@@ -123,8 +123,8 @@ function testCrash(data){
     assert.equal(data.app_key, "{YOUR-APP-KEY}");
     assert.ok(data.device_id);
     assert.ok(data.timestamp);
-    assert.ok(data.hour);
-    assert.ok(data.dow);
+    assert.ok(typeof data.hour !== "undefined");
+    assert.ok(typeof data.dow !== "undefined");
 }
 
 var tests = [
