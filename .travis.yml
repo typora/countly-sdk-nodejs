@@ -1,8 +1,21 @@
-language: javascript
+language: node_js
+node_js:
+  - "6"
 sudo: false
+branches:
+  except:
+  - gh-pages
 before_script:
-  - npm install -g jshint
-  - npm install -g mocha
-script: 
-  - jshint lib/countly.js
-  - mocha test/test-example.js
+- npm install
+- npm install -g jshint
+- npm install -g mocha
+script:
+- jshint lib/countly.js
+- mocha test/test-example.js
+after_success:
+- cd $TRAVIS_BUILD_DIR
+- chmod +x generateDocs.sh
+- bash generateDocs.sh
+env:
+  global:
+    secure: J0ggNe9rS8VNwvj4Jb3MLnSvgjYBbjA++7aUFSjaqZLqhcl9cQv4UgmIMcc4Lhn5WnXJl5+beIYGQPmemTWTICJanM869YFXftJ6DitkYYBcm/9bcoKfQrWwHlQKGZe5V3Cs+LB28b19XdMUOGJwrnxKhlOCJDg+TIBI0wICeea+jZnF8ZndrKP451VTxuEEVD7B5HSpfBzxrpo9bwWbUOPP2xYrD6BuoBSDZ4Cdf+L3pcZih33auYg+vsViZbqSoj3slJVTdP9194hLlqTMqbnATtdStO9fT43cZK9FX4O5gEcbbncpjPuzcXQl9pSgbYRfC2c4rBWdo8DHIhou9ZVkmfTEyABWEiN4A+4KJ8ck547NAFKyewrtrvPDHO1garHDOtIHmBdTX8d0uGZQqwYhiB8UQKG3scmjZWUn3ptiKkzON4OzMOdtHTmSmDNo4xFZULcwoYR1xkbBGKWYPcnGby/4uUHnG3VuHg9AMZHhFjWYln59ga8M0Q2WofyWMv73LLPrSjnesEk2fau+xUnEtKRE0ogwdee3gux9OC/Q3UGc8Bdt157c0QHese482AY0nyQJCg0GsWBTfDVzYqcCJqdoY+2L2wHobdmOJOxJY619HZ1rFCReU+hi57YqoUebpWcfucbR3vRbVsw0SzUF4dQ50Dhpm9HYtwAw5zM=
