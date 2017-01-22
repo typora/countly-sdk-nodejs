@@ -1,0 +1,48 @@
+{
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc","closure"]
+    },
+    "source": {
+        "includePattern": ".+\\.js$",
+        "excludePattern": "(node_modules/|docs)"
+    },
+    "plugins": [],
+    "markdown":{
+        "idInHeadings": true
+    },
+    "opts": {
+        "template": "node_modules/docdash",
+        "encoding": "utf8",
+        "destination": "docs/",
+        "recurse": true,
+        "verbose": true
+    },
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false,
+        "default": {
+            "includeDate": false
+        }
+    },
+    "docdash": {
+        "static": true,
+        "sort": false,
+        "disqus": "countly-documentation",
+		"openGraph": {
+			"title": "Countly NodeJS SDK Documentation",
+			"type": "website",
+			"image": "",
+			"site_name": "Countly NodeJS SDK Documentation",
+			"url": "http://countly.github.io/countly-sdk-nodejs/"
+		},
+		"meta": {
+			"title": "Countly NodeJS SDK Documentation",
+			"description": "JSDoc generated Countly NodeJS SDK documentation",
+			"keyword": "countly, node, nodejs, sdk, jsdoc, doc, documentation"
+		},
+        "search": true,
+        "collapse": false,
+        "scripts": ["https://stats.count.ly/sdk/countly-docs.js"]
+    }
+}

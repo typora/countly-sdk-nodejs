@@ -9,6 +9,7 @@
     "test": "test"
   },
   "scripts": {
+    "docs": "node_modules/.bin/jsdoc lib/countly.js README.md -c jsdoc_conf.json -d docs"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,8 @@
   "dependencies": {},
   "devDependencies": {
     "jshint": "*",
-    "mocha": "*"
+    "mocha": "*",
+    "jsdoc": "3.4.3",
+    "docdash": "git://github.com/ar2rsawseen/docdash.git"
   }
 }
