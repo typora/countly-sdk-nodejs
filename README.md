@@ -32,7 +32,7 @@ var Countly = require('countly-sdk-nodejs');
 
 Countly.init({
     app_key: "{YOUR-API-KEY}",
-    url: "https://cloud.count.ly/",
+    url: "https://try.count.ly/",
     debug: true
 });
 
