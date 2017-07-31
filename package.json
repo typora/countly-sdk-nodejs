@@ -9,7 +9,7 @@
     "test": "test"
   },
   "scripts": {
-    "docs": "node_modules/.bin/jsdoc lib/countly.js README.md -c jsdoc_conf.json -d docs"
+    "docs": "node_modules/.bin/jsdoc lib/countly.js lib/countly-bulk.js lib/countly-bulk-user.js README.md -c jsdoc_conf.json -d docs"
   },
   "repository": {
     "type": "git",
