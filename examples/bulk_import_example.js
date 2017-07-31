@@ -1,4 +1,4 @@
-var CountlyBulk = require('./lib/countly').Bulk;
+var CountlyBulk = require('../lib/countly').Bulk;
 
 var server = new CountlyBulk({
     app_key: "{YOUR-APP-KEY}",
