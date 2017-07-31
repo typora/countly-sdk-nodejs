@@ -68,7 +68,7 @@
  * var Countly = require('countly-sdk-nodejs');
  *
  * Countly.init({
- *   app_key: "{YOUR-API-KEY}",
+ *   app_key: "{YOUR-APP-KEY}",
  *   url: "https://API_HOST/",
  *   debug: true
  * });
@@ -81,14 +81,16 @@
     path = require('path'),
     http = require('http'),
     https = require('https'),
-    cluster = require('cluster');
+    cluster = require('cluster'),
+    Bulk = require("./countly-bulk");
 
  var Countly = {};
- 
+
+ Countly.Bulk = Bulk;
 (function (Countly) {
     'use strict';
     
-    var SDK_VERSION = "16.12";
+    var SDK_VERSION = "17.05";
     var SDK_NAME = "javascript_native_nodejs";
 
     var inited = false,
@@ -147,7 +149,7 @@
  * @param {string} conf.metrics._store - source from where the user/device/installation came from
  * @example
  * Countly.init({
- *   app_key: "{YOUR-API-KEY}",
+ *   app_key: "{YOUR-APP-KEY}",
  *   url: "https://API_HOST/",
  *   debug: true,
  *   app_version: "1.0",
@@ -345,7 +347,7 @@
     };
     
     /**
-    * Report custom event
+    * Report user data
     * @param {Object} user - Countly {@link UserDetails} object
     * @param {string=} user.name - user's full name
     * @param {string=} user.username - user's username or nickname
@@ -938,6 +940,15 @@
     }
     
     var __data = {};
+    var dir = path.resolve(__dirname, filePath);
+    try{
+        if (!fs.existsSync(dir)){
+            fs.mkdirSync(dir);
+        }
+    } catch(ex){
+        //problem creating dir
+        console.log(ex.stack);
+    }
     
     var readFile = function(key){
         var dir = path.resolve(__dirname, filePath+'__'+key+'.json');
@@ -970,7 +981,13 @@
             var dir = path.resolve(__dirname, filePath+'__'+i+'.json');
             var ob = {};
             ob[i] = __data[i];
-            fs.writeFileSync(dir, JSON.stringify(ob));
+            try{
+                fs.writeFileSync(dir, JSON.stringify(ob));
+            }
+            catch(ex){
+                //tried to save whats possible
+                console.log(ex.stack);
+            }
         }
     };
     
@@ -979,11 +996,13 @@
         var dir = path.resolve(__dirname, filePath+'__'+key+'.json');
         var ob = {};
         ob[key] = value;
-        fs.writeFile(dir, JSON.stringify(ob), function (err) {
-            if(err) {
-                return console.log(err);
-            }
-        });
+        try{
+            fs.writeFileSync(dir, JSON.stringify(ob));
+        }
+        catch(ex){
+            //problem saving file
+            console.log(ex.stack);
+        }
     };
     
     
