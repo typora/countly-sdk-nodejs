@@ -1,4 +1,4 @@
-var CountlyBulk = require('../lib/countly').Bulk;
+var CountlyBulk = require("../lib/countly").Bulk;
 
 var server = new CountlyBulk({
     app_key: "{YOUR-APP-KEY}",
@@ -37,4 +37,4 @@ user.begin_session({_os:"Android", _os_version:"7", _app_version:"1.0"}, 240, 15
     .custom_min("min", 10)
     .custom_push("check", "a")
     .custom_push_unique("tags", "morning")
-    .custom_save()
+    .custom_save();

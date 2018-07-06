@@ -1,4 +1,4 @@
-var Countly = require('../lib/countly.js');
+var Countly = require("../lib/countly.js");
 
 Countly.init({
     app_key: "{YOUR-APP-KEY}",
@@ -50,7 +50,7 @@ setTimeout(function(){
     try{
         runthis();
     }
-    catch(ex){Countly.log_error(ex)}
+    catch(ex){Countly.log_error(ex);}
 }, 20000);
 
 setTimeout(function(){

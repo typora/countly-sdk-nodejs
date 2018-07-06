@@ -1,14 +1,14 @@
-cluster = require('cluster');
+var cluster = require("cluster");
 
 if (cluster.isMaster) {
-  console.log('I am master');
+  console.log("I am master");
   cluster.fork();
   cluster.fork();
 } else if (cluster.isWorker) {
   console.log("I am worker "+cluster.worker.id);
 }
 
-var Countly = require('../lib/countly.js');
+var Countly = require("../lib/countly.js");
 
 Countly.init({
     app_key: "{YOUR-APP-KEY}",
@@ -52,7 +52,7 @@ Countly.track_view("test");
 try{
     runthis();
 }
-catch(ex){Countly.log_error(ex)}
+catch(ex){Countly.log_error(ex);}
 
 setTimeout(function(){
     Countly.end_session();
