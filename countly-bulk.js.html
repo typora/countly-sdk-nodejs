@@ -59,7 +59,7 @@
  * @name CountlyBulk
  * @module lib/countly-bulk
  * @example
- * var CountlyBulk = require('countly-sdk-nodejs').Bulk;
+ * var CountlyBulk = require("countly-sdk-nodejs").Bulk;
  *
  * var server = new CountlyBulk({
  *   app_key: "{YOUR-APP-KEY}",
@@ -74,12 +74,12 @@
  * server.add_request({begin_session:1, metrics:{_os:"Linux"}, device_id:"users_device_id", events:[{key:"Test", count:1}]});
  */
  
- var fs = require('fs'),
-    os = require('os'),
-    path = require('path'),
-    http = require('http'),
-    https = require('https'),
-    cluster = require('cluster'),
+ var fs = require("fs"),
+    os = require("os"),
+    path = require("path"),
+    http = require("http"),
+    https = require("https"),
+    cluster = require("cluster"),
     BulkUser = require("./countly-bulk-user");
 
 /**
@@ -106,7 +106,7 @@
  * });
  */
 function CountlyBulk(conf){
-    'use strict';
+    "use strict";
     
     var SDK_VERSION = "18.04";
     var SDK_NAME = "javascript_native_nodejs_bulk";
@@ -277,8 +277,9 @@ function CountlyBulk(conf){
             return;
         }
         if(cluster.isMaster){
-            if(!event.count)
+            if(!event.count){
                 event.count = 1;
+            }
             
             var props = ["key", "count", "sum", "dur", "segmentation", "timestamp"];
             var e = getProperties(event, props);
@@ -287,8 +288,9 @@ function CountlyBulk(conf){
             e.hour = date.getHours();
             e.dow = date.getDay();
             log("Adding event: ", event);
-            if(!eventQueue[device_id])
+            if(!eventQueue[device_id]){
                 eventQueue[device_id] = [];
+            }
             eventQueue[device_id].push(e);
             storeSet("cly_bulk_event", eventQueue);
         }
@@ -442,8 +444,9 @@ function CountlyBulk(conf){
             empty_count++;
             if(empty_count === 3){
                 empty_count = 0;
-                if(empty_queue_callback)
+                if(empty_queue_callback){
                     empty_queue_callback();
+                }
             }
         }
         
@@ -455,8 +458,9 @@ function CountlyBulk(conf){
     //log stuff
     function log(){
         if(conf.debug &amp;&amp; typeof console !== "undefined"){
-            if(arguments[1] &amp;&amp; typeof arguments[1] == "object")
+            if(arguments[1] &amp;&amp; typeof arguments[1] === "object"){
                 arguments[1] = JSON.stringify(arguments[1]);
+            }
             console.log( Array.prototype.slice.call(arguments).join("\n") );
         }
     }
@@ -464,21 +468,24 @@ function CountlyBulk(conf){
     //get unique timestamp in miliseconds
     function getMsTimestamp(){
         var ts = new Date().getTime();
-        if(lastMsTs >= ts)
+        if(lastMsTs >= ts){
             lastMsTs++;
-        else
+        }
+        else{
             lastMsTs = ts;
+        }
         return lastMsTs;
     }
     
     //parsing host and port information from url
     function parseUrl(url) {
         var serverOptions = {
-            host: 'localhost',
+            host: "localhost",
             port: 80
         };
-        if(url.indexOf("https") === 0)
+        if(url.indexOf("https") === 0){
             serverOptions.port = 443;
+        }
         var host = url.split("://").pop();
         serverOptions.host = host;
         var lastPos = host.indexOf(":");
@@ -500,7 +507,7 @@ function CountlyBulk(conf){
     
     //removing trailing slashes
     function stripTrailingSlash(str) {
-        if(str.substr(str.length - 1) == '/') {
+        if(str.substr(str.length - 1) === "/") {
             return str.substr(0, str.length - 1);
         }
         return str;
@@ -517,39 +524,42 @@ function CountlyBulk(conf){
                 host: serverOptions.host,
                 port: serverOptions.port,
                 path: apiPath+"?"+data,
-                method: 'GET'
+                method: "GET"
             };
             
-            if(data.length >= 2000)
+            if(data.length >= 2000){
                 method = "POST";
-            else if(conf.force_post)
+            }
+            else if(conf.force_post){
                 method = "POST";
+            }
             
-            if(method == "POST"){
+            if(method === "POST"){
                 options.method = "POST";
                 options.path = apiPath;
                 options.headers = {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Content-Length': Buffer.byteLength(data)
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Content-Length": Buffer.byteLength(data)
                 };
             }
             var protocol = http;
-            if(conf.url.indexOf("https") === 0)
+            if(conf.url.indexOf("https") === 0){
                 protocol = https;
+            }
             var req = protocol.request(options, function(res) {
-                var str = '';
-                res.on('data', function (chunk) {
+                var str = "";
+                res.on("data", function (chunk) {
                     str += chunk;
                 });
             
-                res.on('end', function () {
+                res.on("end", function () {
                     try{
                         str = JSON.parse(str);
                     }
                     catch(ex){
                         str = {};
                     }
-                    if(res.statusCode >= 200 &amp;&amp; res.statusCode &lt; 300 &amp;&amp; str.result == "Success"){
+                    if(res.statusCode >= 200 &amp;&amp; res.statusCode &lt; 300 &amp;&amp; str.result === "Success"){
                         callback(false, params);
                     }
                     else{
@@ -557,7 +567,7 @@ function CountlyBulk(conf){
                     }
                 });
             });
-            if(method == "POST"){
+            if(method === "POST"){
                 // write data to request body
                 req.write(data);
             }
@@ -565,7 +575,7 @@ function CountlyBulk(conf){
         } catch (e) {
             // fallback
             log("Failed HTTP request", e);
-            if (typeof callback === 'function') { callback(true, params); }
+            if (typeof callback === "function") { callback(true, params); }
         }
     }
        
@@ -580,8 +590,9 @@ function CountlyBulk(conf){
         var prop;
         for(var i = 0; i &lt; props.length; i++){
             prop = props[i];
-            if(typeof orig[prop] !== "undefined")
+            if(typeof orig[prop] !== "undefined"){
                 ob[prop] = orig[prop];
+            }
         }
         return ob;
     }
@@ -603,7 +614,7 @@ function CountlyBulk(conf){
     var readFile = function(key){
         var data;
         if(conf.persist_queue){
-            var dir = path.resolve(__dirname, conf.storage_path+'__'+key+'.json');
+            var dir = path.resolve(__dirname, conf.storage_path+"__"+key+".json");
             
             //try reading data file
             try{
@@ -631,7 +642,7 @@ function CountlyBulk(conf){
     var storeSet = function(key, value) {
         if(conf.persist_queue){
             __data[key] = value;
-            var dir = path.resolve(__dirname, conf.storage_path+'__'+key+'.json');
+            var dir = path.resolve(__dirname, conf.storage_path+"__"+key+".json");
             var ob = {};
             ob[key] = value;
             try{
@@ -645,12 +656,14 @@ function CountlyBulk(conf){
     };
     
     var storeGet = function(key, def) {
-        if(typeof __data[key] == "undefined"){
+        if(typeof __data[key] === "undefined"){
             var ob = readFile(key);
-            if(!ob)
+            if(!ob){
                 __data[key] = def;
-            else
+            }
+            else{
                 __data[key] = ob[key];
+            }
         }
         return __data[key];
     };
@@ -658,13 +671,13 @@ function CountlyBulk(conf){
     //listen to current workers
     if(cluster.workers){
         for (var id in cluster.workers) {
-            cluster.workers[id].on('message', handleWorkerMessage);
+            cluster.workers[id].on("message", handleWorkerMessage);
         }
     }
     
     //handle future workers
-    cluster.on('fork', function(worker) {
-        worker.on('message', handleWorkerMessage);
+    cluster.on("fork", function(worker) {
+        worker.on("message", handleWorkerMessage);
     });
     
     var requestQueue = storeGet("cly_req_queue", []),

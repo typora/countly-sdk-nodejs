@@ -120,15 +120,7 @@
             
         <p class="code-caption">SDK integration</p>
     
-    <pre class="prettyprint"><code>var Countly = require('countly-sdk-nodejs');
-
-Countly.init({
-  app_key: "{YOUR-APP-KEY}",
-  url: "https://API_HOST/",
-  debug: true
-});
-
-Countly.begin_session();</code></pre>
+    <pre class="prettyprint"><code>var Countly = require("countly-sdk-nodejs");Countly.init({  app_key: "{YOUR-APP-KEY}",  url: "https://API_HOST/",  debug: true});Countly.begin_session();</code></pre>
 
         
     
@@ -293,17 +285,7 @@ Countly.begin_session();</code></pre>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>Countly.init({
-  app_key: "{YOUR-APP-KEY}",
-  url: "https://API_HOST/",
-  debug: true,
-  app_version: "1.0",
-  metrics:{
-     _os: "Ubuntu",
-     _os_version: "16.04",
-     _device: "aws-server"
-  }
-});</code></pre>
+    <pre class="prettyprint"><code>Countly.init({  app_key: "{YOUR-APP-KEY}",  url: "https://API_HOST/",  debug: true,  app_version: "1.0",  metrics:{     _os: "Ubuntu",     _os_version: "16.04",     _device: "aws-server"  }});</code></pre>
 
 
 
@@ -1324,19 +1306,12 @@ Countly.begin_session();</code></pre>
     
         <p class="code-caption">Adding all features under one group</p>
     
-    <pre class="prettyprint"><code>Countly.group_features({all:["sessions","events","views","crashes","attribution","users"]});
-//After this call Countly.add_consent("all") to allow all features
+    <pre class="prettyprint"><code>Countly.group_features({all:["sessions","events","views","crashes","attribution","users"]});//After this call Countly.add_consent("all") to allow all features
     </code></pre>
 
         <p class="code-caption">Grouping features</p>
     
-    <pre class="prettyprint"><code>Countly.group_features({
-   activity:["sessions","events","views"],
-   info:["attribution","users"]
-});
-//After this call Countly.add_consent("activity") to allow "sessions","events","views"
-//or call Countly.add_consent("info") to allow "attribution","users"
-//or call Countly.add_consent("crashes") to allow some separate feature</code></pre>
+    <pre class="prettyprint"><code>Countly.group_features({   activity:["sessions","events","views"],   info:["attribution","users"]});//After this call Countly.add_consent("activity") to allow "sessions","events","views"//or call Countly.add_consent("info") to allow "attribution","users"//or call Countly.add_consent("crashes") to allow some separate feature</code></pre>
 
 
 
@@ -1638,7 +1613,7 @@ Countly.begin_session();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line259">line 259</a>
+        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line260">line 260</a>
     </li></ul></dd>
     
 
@@ -1774,7 +1749,7 @@ Countly.begin_session();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line306">line 306</a>
+        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line307">line 307</a>
     </li></ul></dd>
     
 
@@ -1910,7 +1885,7 @@ Countly.begin_session();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line355">line 355</a>
+        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line356">line 356</a>
     </li></ul></dd>
     
 
@@ -2043,7 +2018,7 @@ Countly.begin_session();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line377">line 377</a>
+        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line378">line 378</a>
     </li></ul></dd>
     
 
@@ -2176,7 +2151,7 @@ Countly.begin_session();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line390">line 390</a>
+        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line391">line 391</a>
     </li></ul></dd>
     
 
@@ -2309,7 +2284,7 @@ Countly.begin_session();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line407">line 407</a>
+        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line408">line 408</a>
     </li></ul></dd>
     
 
@@ -2485,7 +2460,7 @@ Countly.begin_session();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line447">line 447</a>
+        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line449">line 449</a>
     </li></ul></dd>
     
 
@@ -2833,7 +2808,7 @@ Countly.begin_session();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line482">line 482</a>
+        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line485">line 485</a>
     </li></ul></dd>
     
 
@@ -2966,7 +2941,7 @@ Countly.begin_session();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line494">line 494</a>
+        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line497">line 497</a>
     </li></ul></dd>
     
 
@@ -3102,7 +3077,7 @@ Countly.begin_session();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line524">line 524</a>
+        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line527">line 527</a>
     </li></ul></dd>
     
 
@@ -3560,7 +3535,7 @@ Countly.begin_session();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line537">line 537</a>
+        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line540">line 540</a>
     </li></ul></dd>
     
 
@@ -3736,7 +3711,7 @@ Countly.begin_session();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line684">line 684</a>
+        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line693">line 693</a>
     </li></ul></dd>
     
 
@@ -3881,7 +3856,7 @@ Countly.begin_session();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line702">line 702</a>
+        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line711">line 711</a>
     </li></ul></dd>
     
 
@@ -4057,7 +4032,7 @@ Countly.begin_session();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line710">line 710</a>
+        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line719">line 719</a>
     </li></ul></dd>
     
 
@@ -4190,7 +4165,7 @@ Countly.begin_session();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line719">line 719</a>
+        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line728">line 728</a>
     </li></ul></dd>
     
 
@@ -4274,7 +4249,7 @@ Countly.begin_session();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line728">line 728</a>
+        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line737">line 737</a>
     </li></ul></dd>
     
 
@@ -4358,7 +4333,7 @@ Countly.begin_session();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line739">line 739</a>
+        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line748">line 748</a>
     </li></ul></dd>
     
 
@@ -4503,7 +4478,7 @@ Countly.begin_session();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line769">line 769</a>
+        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line779">line 779</a>
     </li></ul></dd>
     
 
@@ -4648,7 +4623,7 @@ Countly.begin_session();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line778">line 778</a>
+        <a href="countly.js.html">countly.js</a>, <a href="countly.js.html#line788">line 788</a>
     </li></ul></dd>
     
 

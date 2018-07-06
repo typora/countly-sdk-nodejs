@@ -59,7 +59,7 @@
  * @name CountlyBulkUser
  * @module lib/countly-bulk-user
  * @example
- * var CountlyBulk = require('countly-sdk-nodejs').Bulk;
+ * var CountlyBulk = require("countly-sdk-nodejs").Bulk;
  *
  * var server = new CountlyBulk({
  *   app_key: "{YOUR-API-KEY}",
@@ -83,7 +83,7 @@
  * @param {boolean} [conf.require_consent=false] - Pass true if you are implementing GDPR compatible consent management. It would prevent running any functionality without proper consent
  * @returns {module:lib/countly-bulk-user} instance
  * @example
- * var CountlyBulk = require('countly-sdk-nodejs').Bulk;
+ * var CountlyBulk = require("countly-sdk-nodejs").Bulk;
  *
  * var server = new CountlyBulk({
  *   app_key: "{YOUR-API-KEY}",
@@ -96,7 +96,7 @@
  * user.begin_session().add_event({key:"Test", count:1})
  */
 function CountlyBulkUser(conf){
-    'use strict';
+    "use strict";
     
     var sessionStart = 0,
     syncConsents = {},
@@ -293,10 +293,12 @@ function CountlyBulkUser(conf){
             var bulk = [];
             var query = prepareQuery({begin_session:1, metrics:metrics});
             if(this.check_consent("location")){
-                if(conf.country_code)
+                if(conf.country_code){
                     query.country_code = conf.country_code;
-                if(conf.city)
+                }
+                if(conf.city){
                     query.city = conf.city;
+                }
             }
             else{
                 query.location = "";
@@ -313,12 +315,15 @@ function CountlyBulkUser(conf){
             for(var i = 0; i &lt; beatCount; i++){
                 if(seconds > 0){
                     query = prepareQuery();
-                    if(seconds > 60)
+                    if(seconds > 60){
                         query.session_duration = 60;
-                    else
+                    }
+                    else{
                         query.session_duration = seconds;
-                    if(conf.ip_address)
+                    }
+                    if(conf.ip_address){
                         query.ip_address = conf.ip_address;
+                    }
                     if(timestamp){
                         query.timestamp = timestamp+((i+1)*60);
                     }
@@ -386,14 +391,17 @@ function CountlyBulkUser(conf){
         if(this.check_consent("attribution")){
             var query = prepareQuery();
             
-            if(campaign_id)
+            if(campaign_id){
                 query.campaign_id = campaign_id;
+            }
             
-            if(campaign_user_id)
+            if(campaign_user_id){
                 query.campaign_user = campaign_user_id;
+            }
             
-            if(timestamp || sessionStart !== 0)
+            if(timestamp || sessionStart !== 0){
                 query.timestamp = timestamp || sessionStart;
+            }
             
             conf.server.add_request(query);
         }
@@ -433,8 +441,9 @@ function CountlyBulkUser(conf){
                 event.segmentation.bounce = 1;
             }
             var query = prepareQuery({events:[event]});
-            if(timestamp)
-                query.timestamp = timestamp
+            if(timestamp){
+                query.timestamp = timestamp;
+            }
             conf.server.add_request(query);
         }
         else{
@@ -463,8 +472,9 @@ function CountlyBulkUser(conf){
                 }
             };
             var query = prepareQuery({events:[event]});
-            if(timestamp)
-                query.timestamp = timestamp
+            if(timestamp){
+                query.timestamp = timestamp;
+            }
             conf.server.add_request(query);
             return this;
         }
@@ -503,8 +513,9 @@ function CountlyBulkUser(conf){
     this.report_crash = function(crash, timestamp){
         if(this.check_consent("crashes")){
             var query = prepareQuery({crash:crash});
-            if(timestamp)
-                query.timestamp = timestamp
+            if(timestamp){
+                query.timestamp = timestamp;
+            }
             conf.server.add_request(query);
         }
         return this;
@@ -512,15 +523,18 @@ function CountlyBulkUser(conf){
     
     var customData = {};
     var change_custom_property = function(key, value, mod){
-        if(!customData[key])
+        if(!customData[key]){
             customData[key] = {};
-        if(mod == "$push" || mod == "$pull" || mod == "$addToSet"){
-            if(!customData[key][mod])
+        }
+        if(mod === "$push" || mod === "$pull" || mod === "$addToSet"){
+            if(!customData[key][mod]){
                 customData[key][mod] = [];
+            }
             customData[key][mod].push(value);
         }
-        else
+        else{
             customData[key][mod] = value;
+        }
     };
     
     /**
@@ -529,7 +543,7 @@ function CountlyBulkUser(conf){
     * @param {string|number} value - value to store under provided property
     * @returns {module:lib/countly-bulk-user} instance
     * @example
-    * var CountlyBulk = require('countly-sdk-nodejs').Bulk;
+    * var CountlyBulk = require("countly-sdk-nodejs").Bulk;
     *
     * var server = new CountlyBulk({
     *   app_key: "{YOUR-API-KEY}",
@@ -656,10 +670,12 @@ function CountlyBulkUser(conf){
     
     function prepareQuery(query){
         query = query || {};
-        if(!query.device_id)
+        if(!query.device_id){
             query.device_id = conf.device_id;
-        if(conf.ip_address &amp;&amp; this.check_consent("location"))
+        }
+        if(conf.ip_address &amp;&amp; this.check_consent("location")){
             query.ip_address = conf.ip_address;
+        }
         return query;
     }
     
@@ -669,8 +685,9 @@ function CountlyBulkUser(conf){
         var prop;
         for(var i = 0; i &lt; props.length; i++){
             prop = props[i];
-            if(typeof orig[prop] !== "undefined")
+            if(typeof orig[prop] !== "undefined"){
                 ob[prop] = orig[prop];
+            }
         }
         return ob;
     }
