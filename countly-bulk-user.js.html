@@ -565,7 +565,7 @@ function CountlyBulkUser(conf){
     this.custom_set = function(key, value){
         customData[key] = value;
         return this;
-    },
+    };
     /**
     * Sets user's custom property value only if it was not set before
     * @param {string} key - name of the property to attach to user
@@ -575,7 +575,7 @@ function CountlyBulkUser(conf){
     this.custom_set_once = function(key, value){
         change_custom_property(key, 1, "$setOnce");
         return this;
-    },
+    };
     /**
     * Increment value under the key of this user's custom properties by one
     * @param {string} key - name of the property to attach to user
@@ -584,7 +584,7 @@ function CountlyBulkUser(conf){
     this.custom_increment = function(key){
         change_custom_property(key, 1, "$inc");
         return this;
-    },
+    };
     /**
     * Increment value under the key of this user's custom properties by provided value
     * @param {string} key - name of the property to attach to user
@@ -594,7 +594,7 @@ function CountlyBulkUser(conf){
     this.custom_increment_by = function(key, value){
         change_custom_property(key, value, "$inc");
         return this;
-    },
+    };
     /**
     * Multiply value under the key of this user's custom properties by provided value
     * @param {string} key - name of the property to attach to user
@@ -604,7 +604,7 @@ function CountlyBulkUser(conf){
     this.custom_multiply = function(key, value){
         change_custom_property(key, value, "$mul");
         return this;
-    },
+    };
     /**
     * Save maximal value under the key of this user's custom properties
     * @param {string} key - name of the property to attach to user
@@ -614,7 +614,7 @@ function CountlyBulkUser(conf){
     this.custom_max = function(key, value){
         change_custom_property(key, value, "$max");
         return this;
-    },
+    };
     /**
     * Save minimal value under the key of this user's custom properties
     * @param {string} key - name of the property to attach to user
@@ -624,7 +624,7 @@ function CountlyBulkUser(conf){
     this.custom_min = function(key, value){
         change_custom_property(key, value, "$min");
         return this;
-    },
+    };
     /**
     * Add value to array under the key of this user's custom properties. If property is not an array, it will be converted to array
     * @param {string} key - name of the property to attach to user
@@ -634,7 +634,7 @@ function CountlyBulkUser(conf){
     this.custom_push = function(key, value){
         change_custom_property(key, value, "$push");
         return this;
-    },
+    };
     /**
     * Add value to array under the key of this user's custom properties, storing only unique values. If property is not an array, it will be converted to array
     * @param {string} key - name of the property to attach to user
@@ -644,7 +644,7 @@ function CountlyBulkUser(conf){
     this.custom_push_unique = function(key, value){
         change_custom_property(key, value, "$addToSet");
         return this;
-    },
+    };
     /**
     * Remove value from array under the key of this user's custom properties
     * @param {string} key - name of the property
@@ -654,7 +654,7 @@ function CountlyBulkUser(conf){
     this.custom_pull = function(key, value){
         change_custom_property(key, value, "$pull");
         return this;
-    },
+    };
     /**
     * Save changes made to user's custom properties object and send them to server
     * @returns {module:lib/countly-bulk-user} instance
@@ -666,7 +666,7 @@ function CountlyBulkUser(conf){
         }
         customData = {};
         return this;
-    }
+    };
     
     //log stuff
     function log(){
