@@ -80,6 +80,7 @@
  * @param {string=} conf.country_code - country code for your user
  * @param {string=} conf.city - name of the city of your user
  * @param {string=} conf.ip_address - ip address of your user
+ * @param {boolean} [conf.debug=false] - output debug info into console
  * @param {boolean} [conf.require_consent=false] - Pass true if you are implementing GDPR compatible consent management. It would prevent running any functionality without proper consent
  * @returns {module:lib/countly-bulk-user} instance
  * @example
@@ -212,7 +213,6 @@ function CountlyBulkUser(conf){
                             lastParams.begin_session = null;
                         }
                         else if(feature === "views" &amp;&amp; lastParams.track_pageview){
-                            lastView = null;
                             this.track_pageview.apply(this, lastParams.track_pageview);
                             lastParams.track_pageview = null;
                         }
@@ -264,7 +264,7 @@ function CountlyBulkUser(conf){
             consentTimer = null;
         }
         consentTimer = setTimeout(function(){
-            if(hasAnyProperties(syncConsents)){
+            if(Object.keys(syncConsents).length){
                 //we have consents to sync, create request
                 conf.server.add_bulk_request([{consent:JSON.stringify(syncConsents)}]);
                 //clear consents that needs syncing
@@ -337,7 +337,7 @@ function CountlyBulkUser(conf){
             lastParams.begin_session = arguments;
         }
         return this;
-    }
+    };
     
     /**
     * Report custom event
@@ -668,6 +668,16 @@ function CountlyBulkUser(conf){
         return this;
     }
     
+    //log stuff
+    function log(){
+        if(conf.debug &amp;&amp; typeof console !== "undefined"){
+            if(arguments[1] &amp;&amp; typeof arguments[1] === "object"){
+                arguments[1] = JSON.stringify(arguments[1]);
+            }
+            console.log( Array.prototype.slice.call(arguments).join("\n") );
+        }
+    }
+    
     function prepareQuery(query){
         query = query || {};
         if(!query.device_id){
@@ -691,7 +701,7 @@ function CountlyBulkUser(conf){
         }
         return ob;
     }
-};
+}
 
 module.exports = CountlyBulkUser;
 </code></pre>
