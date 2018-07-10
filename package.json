@@ -30,7 +30,7 @@
   "devDependencies": {
     "jshint": "*",
     "mocha": "*",
-    "jsdoc": "3.4.3",
+    "jsdoc": "*",
     "docdash": "git://github.com/ar2rsawseen/docdash.git"
   }
 }
