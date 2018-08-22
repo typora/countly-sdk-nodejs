@@ -31,6 +31,6 @@
     "jshint": "*",
     "mocha": "*",
     "jsdoc": "*",
-    "docdash": "git://github.com/ar2rsawseen/docdash.git"
+    "docdash": "1.0.0"
   }
 }
